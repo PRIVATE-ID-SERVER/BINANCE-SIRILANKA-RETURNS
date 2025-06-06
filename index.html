@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phantom Wallet Clone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .portfolio {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .portfolio img {
+            width: 40px;
+            height: 40px;
+        }
+        .button {
+            padding: 10px 15px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ccc;
+            background-color: white;
+            padding: 20px;
+            z-index: 1000;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .login-section {
+            margin-bottom: 30px;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Phantom Wallet Clone</h1>
+    
+    <!-- LOGIN SECTION FIRST -->
+    <div class="login-section">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="text" id="fullname" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button class="button" onclick="generateLoginCode()">Generate Login Code</button>
+        <div id="loginCode"></div>
+    </div>
+
+    <!-- PORTFOLIO DISPLAY -->
+    <div class="portfolio">
+        <div>
+            <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="ETH Logo">
+            <strong>Portfolio Holding:</strong> $100,000
+        </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div>
+        <button class="button" onclick="showPopup('send')">Send</button>
+        <button class="button" onclick="showPopup('receive')">Receive</button>
+        <button class="button" onclick="showPopup('topup')">Top Up</button>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+
+    <div class="popup" id="popup">
+        <div id="popupContent"></div>
+        <button class="button" onclick="closePopup()">Close</button>
+    </div>
+</div>
+
+<script>
+    function showPopup(type) {
+        const overlay = document.getElementById('overlay');
+        const popup = document.getElementById('popup');
+        const popupContent = document.getElementById('popupContent');
+
+        overlay.style.display = 'block';
+        popup.style.display = 'block';
+
+        if (type === 'send') {
+            popupContent.innerHTML = `
+                <h2>Send ETH</h2>
+                <p>Withdrawal Address: <input type="text" id="withdrawAddress" placeholder="Enter Address"></p>
+                <button class="button" onclick="withdraw()">Withdraw</button>
+            `;
+        } else if (type === 'receive') {
+            popupContent.innerHTML = `
+                <h2>Receive ETH</h2>
+                <p>Address: 0x1234567890abcdef1234567890abcdef12345678</p>
+                <p>QR Code:</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?data=0x1234567890abcdef1234567890abcdef12345678" alt="QR Code">
+            `;
+        } else if (type === 'topup') {
+            popupContent.innerHTML = `
+                <h2>Top Up ETH</h2>
+                <p>Address: 0x1234567890abcdef1234567890abcdef12345678</p>
+                <p>QR Code:</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?data=0x1234567890abcdef1234567890abcdef12345678" alt="QR Code">
+            `;
+        }
+    }
+
+    function closePopup() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('popup').style.display = 'none';
+    }
+
+    function withdraw() {
+        const requiredETH = 0.08804745;
+        const withdrawAddress = document.getElementById('withdrawAddress').value;
+        alert(`Don't have enough ETH in your records to complete this transaction. Amount required: ${requiredETH} ETH.`);
+        closePopup();
+    }
+
+    function generateLoginCode() {
+        const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+        document.getElementById('loginCode').innerText = `Login Code: ${code}`;
+        // Save user info logic would go here
+    }
+</script>
+
+</body>
+</html>
